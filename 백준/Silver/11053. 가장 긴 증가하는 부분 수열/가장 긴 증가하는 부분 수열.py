@@ -1,16 +1,17 @@
-n = int(input())
-dp = list(map(int, input().split()))
-answer = [0] * (n + 1)
+import sys
 
-for i in range(n):
-    minNum = 0
-    for j in range(i + 1):
-        if dp[i] > dp[j]:
-            if minNum < answer[j]:
-                minNum = answer[j]
-    answer[i] = minNum + 1
-    
+input = sys.stdin.readline
 
+N = int(input())
+lst = [0] + list(map(int, input().split()))
 
+dp = [0] * (N + 1)
 
-print(max(answer))
+for i in range(1, N + 1):
+    for j in range(i):
+        if lst[i] > lst[j]:
+            if dp[j] + 1 > dp[i]:
+                dp[i] = dp[j] + 1
+                
+print(max(dp))
+answer = []
