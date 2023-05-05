@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 )
 
 var (
@@ -15,32 +14,24 @@ var (
 
 func main() {
 	defer writer.Flush()
+	scanner.Buffer(make([]byte, 0, 2000000), 2000000)
 
 	answer := 0
 
 	N, M := scanInt(), scanInt()
-	inputString := scanString()
-
-	searchWord := "I" + strings.Repeat("OI", N)
-	//fmt.Fprintln(writer, "N", N)
-	//fmt.Fprintln(writer, "M", M)
-	//fmt.Fprintln(writer, inputString)
-	//fmt.Fprintln(writer, searchWord)
-
-	var flag bool
-	for i := 0; i <= M-(1+(2*N)); i++ {
-		flag = true
-		//fmt.Fprintln(writer, i)
-		//fmt.Fprintln(writer, inputString[i])
-		for j := 0; j < 1+(2*N); j++ {
-			if searchWord[j] == inputString[i+j] {
-				continue
+	is := scanString()
+	i, count := 0, 0
+	for i < M-2 {
+		if is[i:i+3] == "IOI" {
+			count++
+			i += 2
+			if count == N {
+				answer++
+				count--
 			}
-			flag = false
-			break
-		}
-		if flag {
-			answer++
+		} else {
+			i++
+			count = 0
 		}
 	}
 	fmt.Fprintln(writer, answer)
