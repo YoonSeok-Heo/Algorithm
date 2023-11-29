@@ -17,10 +17,8 @@ h = []
 heapq.heappush(h, class_list[0][1])
 
 for i in range(1, n):
-    if class_list[i][0] < h[0]:
-        heapq.heappush(h, class_list[i][1])
-    else:
+    if class_list[i][0] >= h[0]:
         heapq.heappop(h)
-        heapq.heappush(h, class_list[i][1])
+    heapq.heappush(h, class_list[i][1])
 
 print(len(h))
