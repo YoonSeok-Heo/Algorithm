@@ -1,15 +1,20 @@
-import sys
+from sys import stdin
 import heapq
-heap = []
+
+input = stdin.readline
+
 n = int(input())
-for _ in range(n):
-    heapq.heappush(heap, int(sys.stdin.readline()))
 
-sumTmp = 0
-sumTmp2 = 0
-for _ in range(n - 1):
-    sumTmp = heapq.heappop(heap) + heapq.heappop(heap)
-    sumTmp2 += sumTmp
-    heapq.heappush(heap, sumTmp)
+answer = 0
+arr = [int(input()) for i in range(n)]
 
-print(sumTmp2)
+heapq.heapify(arr)
+
+for i in range(n - 1):
+    a = heapq.heappop(arr)
+    b = heapq.heappop(arr)
+    sum_cards = a + b
+    answer += sum_cards
+    heapq.heappush(arr, sum_cards)
+    
+print(answer)
