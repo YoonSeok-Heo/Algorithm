@@ -1,41 +1,54 @@
-import sys
-sys.setrecursionlimit(100000)
+from sys import stdin
+
+input = stdin.readline
+
+dx, dy = [0, 1, 0, -1], [1, 0, -1, 0]
+
+answer, color_answer = 0, 0
 
 n = int(input())
-dx, dy = [0, 1, 0, -1], [1, 0, -1, 0]
-answer, colorWeek = 0, 0
-visitBoard = [list(False for i in range(n)) for j in range(n)]
-board = [list(input()) for i in range(n)]
+arr = [list(input()) for i in range(n)]
 
-
-def dfs(color, x, y):  
-    global visitBoard
-
-    visitBoard[x][y] = True
-
-    for i in range(4):
-        xx, yy = x + dx[i], y + dy[i]
-
-        if xx < 0 or xx >= n or yy < 0 or yy >= n:
-            continue
-        if visitBoard[xx][yy] == False and board[xx][yy] == color:
-            dfs(color, xx, yy)
-
-for i in range(n):
-    for j in range(n):
-        if not visitBoard[i][j]:
-            answer += 1
-            dfs(board[i][j], i, j)
-        if board[i][j] == 'G':
-            board[i][j] = 'R'
+def dfs(color, x, y):
+    
+    global visit
+    s = [[x, y]]
+    
+    while s:
+        
+        xx, yy = s.pop()
+        
+        for i in range(4):
+            nx, ny = xx + dx[i], yy + dy[i]
             
-visitBoard = [list(False for i in range(n)) for j in range(n)]
+            if nx < 0 or nx >= n or ny < 0 or ny >= n:
+                continue
+            if visit[nx][ny]:
+                continue
+            if arr[nx][ny] == color:
+                visit[nx][ny] = True
+                s.append([nx, ny])
+                
+            
+visit = [[False] * n for i in range(n)]
 
 for i in range(n):
     for j in range(n):
-        if not visitBoard[i][j]:
-            colorWeek += 1
-            dfs(board[i][j], i, j)
+        if not visit[i][j]:
+            answer += 1
+            visit[i][j] = True
+            dfs(arr[i][j], i, j)
+        if arr[i][j] == 'G':
+            arr[i][j] = 'R'
+            
+visit = [[False] * n for i in range(n)]
 
-print(answer, colorWeek)
+for i in range(n):
+    for j in range(n):
+        if not visit[i][j]:
+            color_answer += 1
+            visit[i][j] = True
+            dfs(arr[i][j], i, j)
+    
 
+print(answer, color_answer)
